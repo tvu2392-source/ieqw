@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Thiệp Mời Đi Date ✨ Đặc Biệt Dành Riêng Cho Cậu</title>
+  <meta name="description"
+    content="Thiệp mời hẹn hò tương tác lãng mạn, chọn địa điểm, thời gian và xuất vé hẹn hò độc quyền!">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+    rel="stylesheet">
+
+  <!-- Canvas Confetti & html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Animated Background Icons -->
+  <div class="hearts-background" id="heartsBg" aria-hidden="true"></div>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+  <!-- ==================== SCENE 1: ENVELOPE ==================== -->
+  <section class="scene scene-envelope active" id="sceneEnvelope">
+    <div class="envelope-wrapper">
+      <div class="envelope-glow"></div>
+      <div class="envelope" id="envelopeCard">
+        <div class="envelope-flap" id="envelopeFlap"></div>
+        <div class="envelope-paper-preview">
+          <span class="preview-heart">💌</span>
+        </div>
+        <div class="envelope-front"></div>
+
+        <!-- Wax Seal button -->
+        <button class="wax-seal" id="openEnvelopeBtn" aria-label="Mở phong bì">
+          <span class="seal-heart">❤️</span>
+          <span class="seal-ripple"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="envelope-caption">
+      <div class="sparkle-tag">✨ Thư Mời Bí Mật ✨</div>
+      <h1 class="caption-title">Có một lời nhắn gửi đến <span class="recipient-name-display highlight">Cậu</span></h1>
+      <p class="caption-sub">Chạm vào con dấu trái tim để mở thư nhé!</p>
+    </div>
+  </section>
+
+  <!-- ==================== SCENE 2: THE QUESTION ==================== -->
+  <section class="scene scene-question" id="sceneQuestion">
+    <div class="letter-card glass-card">
+      <div class="letter-stamp">Special Invitation</div>
+      <div class="letter-header">
+        <div class="cute-avatar-pair">
+          <span class="avatar boy">🐻</span>
+          <span class="heart-pulse">💖</span>
+          <span class="avatar girl">🐰</span>
+        </div>
+        <span class="letter-date" id="currentDateDisplay">Hôm nay</span>
+      </div>
+
+      <div class="letter-body">
+        <h2 class="letter-greeting">Hé lô <span class="recipient-name-display highlight">em iu</span>! 👋</h2>
+        <p class="letter-text" id="invitationMessageDisplay">
+          Thứ 5 ngày 15/10/2026 này, lúc 7h tối em có rảnh không? Anh muốn mời em một buổi date thật ngọt ngào: cùng đi
+          ăn món em thích và dạo phố lộng gió với anh nhé! 🥰
+        </p>
+      </div>
+
+      <div class="response-actions" id="responseActions">
+        <button class="action-btn btn-yes" id="btnYes">
+          <span class="btn-emoji">🥰</span>
+          <span class="btn-title">Đồng ý đi liền!</span>
+        </button>
+        <button class="action-btn btn-no" id="btnNo">
+          <span class="btn-emoji">🙈</span>
+          <span class="btn-title" id="btnNoText">Hong đi đâu</span>
+        </button>
+      </div>
+
+      <p class="hint-text" id="hintText">Gợi ý: Nút "Hong đi" có chân chạy đó nha! 🏃‍♂️💨</p>
+    </div>
+  </section>
+
+  <!-- ==================== SCENE 3: DATE PLANNER ==================== -->
+  <section class="scene scene-planner" id="scenePlanner">
+    <div class="planner-card glass-card">
+      <!-- Progress Steps (2 steps: Món ngon & Dặn dò) -->
+      <div class="planner-progress">
+        <div class="progress-step active" data-step="1">
+          <span class="step-num">1</span>
+          <span class="step-label">Món ngon</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2">
+          <span class="step-num">2</span>
+          <span class="step-label">Dặn dò</span>
+        </div>
+      </div>
+
+      <!-- Form Panels -->
+      <div class="wizard-panels">
+
+        <!-- STEP 1: Food & Drinks -->
+        <div class="wizard-panel active" id="wizardStep1">
+          <div class="step-heading">
+            <span class="step-icon">🍲</span>
+            <div>
+              <h3>Bụng đói rồi, mình ăn gì ta?</h3>
+              <p>Em thích món gì cứ chọn thoải mái nha (chọn nhiều món cũng được!)</p>
+            </div>
+          </div>
+
+          <div class="selection-grid" id="foodGrid">
+            <label class="selection-card selected">
+              <input type="checkbox" name="foodItem" value="Lẩu riêu cua / Haidilao ấm áp 🍲" checked>
+              <div class="card-inner">
+                <div class="card-image-wrapper">
+                  <img src="images/lau-am-ap.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80';" alt="Lẩu ấm áp Hà Nội" class="card-food-img" loading="lazy">
+                  <span class="card-check-icon">❤️</span>
+                </div>
+                <div class="card-info">
+                  <span class="card-title">Lẩu ấm áp</span>
+                  <span class="card-badge">Lẩu riêu / Haidilao</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="selection-card">
+              <input type="checkbox" name="foodItem" value="Nướng chảo bơ xèo xèo phố cổ 🥩">
+              <div class="card-inner">
+                <div class="card-image-wrapper">
+                  <img src="images/nuong-bbq.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80';" alt="Nướng BBQ Hà Nội" class="card-food-img" loading="lazy">
+                  <span class="card-check-icon">❤️</span>
+                </div>
+                <div class="card-info">
+                  <span class="card-title">Nướng BBQ</span>
+                  <span class="card-badge">Bơ chảo phố cổ</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="selection-card">
+              <input type="checkbox" name="foodItem" value="Sushi & ẩm thực Nhật tinh tế 🍣">
+              <div class="card-inner">
+                <div class="card-image-wrapper">
+                  <img src="images/sushi-nhat.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80';" alt="Sushi Nhật Bản Hà Nội" class="card-food-img" loading="lazy">
+                  <span class="card-check-icon">❤️</span>
+                </div>
+                <div class="card-info">
+                  <span class="card-title">Sushi Nhật Bản</span>
+                  <span class="card-badge">Tươi ngon tinh tế</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="selection-card">
+              <input type="checkbox" name="foodItem" value="Bữa tối lãng mạn view Hồ Tây 🍷">
+              <div class="card-inner">
+                <div class="card-image-wrapper">
+                  <img src="images/bua-toi-sang-xin.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80';" alt="Bữa tối sang xịn Hà Nội" class="card-food-img" loading="lazy">
+                  <span class="card-check-icon">❤️</span>
+                </div>
+                <div class="card-info">
+                  <span class="card-title">Bữa tối sang xịn</span>
+                  <span class="card-badge">View Hồ Tây nến hoa</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="selection-card">
+              <input type="checkbox" name="foodItem" value="Cafe trứng & bánh ngọt phố cổ 🍰">
+              <div class="card-inner">
+                <div class="card-image-wrapper">
+                  <img src="images/cafe-banh-ngot.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80';" alt="Cafe & Bánh ngọt Hà Nội" class="card-food-img" loading="lazy">
+                  <span class="card-check-icon">❤️</span>
+                </div>
+                <div class="card-info">
+                  <span class="card-title">Cafe & Bánh ngọt</span>
+                  <span class="card-badge">Cafe trứng & check-in</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="selection-card">
+              <input type="checkbox" name="foodItem" value="Trà sữa & nem chua rán Nhà Thờ 🧋">
+              <div class="card-inner">
+                <div class="card-image-wrapper">
+                  <img src="images/tra-sua-an-vat.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1571841591341-be09a94376b4?auto=format&fit=crop&w=600&q=80';" alt="Trà sữa & Ăn vặt Hà Nội" class="card-food-img" loading="lazy">
+                  <span class="card-check-icon">❤️</span>
+                </div>
+                <div class="card-info">
+                  <span class="card-title">Trà sữa & Ăn vặt</span>
+                  <span class="card-badge">Nem rán & Nhà Thờ</span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="input-field-group mt-3">
+            <label for="customFoodInput">Món đặc biệt khác em đang thèm:</label>
+            <input type="text" id="customFoodInput" class="custom-input"
+              placeholder="Ví dụ: Bún chả Hàng Quạt, Phở cuốn Ngũ Xá, Bánh tráng nướng...">
+          </div>
+        </div>
+
+        <!-- STEP 2: Details & Pick-up -->
+        <div class="wizard-panel" id="wizardStep2">
+          <div class="step-heading">
+            <span class="step-icon">🛵</span>
+            <div>
+              <h3>Đón đưa & Lời dặn dò</h3>
+              <p>Mọi thứ để anh chuẩn bị chu đáo nhất cho em!</p>
+            </div>
+          </div>
+
+          <div class="option-selection">
+            <span class="sub-label">Phương án di chuyển:</span>
+            <div class="radio-row">
+              <label class="radio-tag active">
+                <input type="radio" name="pickupMethod" value="Anh qua đón em tận cửa nhà nha 🛵" checked>
+                <span>🛵 Anh qua đón tận nhà nha</span>
+              </label>
+              <label class="radio-tag">
+                <input type="radio" name="pickupMethod" value="Tụi mình hẹn nhau ở điểm đến ✨">
+                <span>📍 Hẹn nhau tại điểm đến</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="option-selection mt-3">
+            <span class="sub-label">Dress code gợi ý:</span>
+            <div class="radio-row">
+              <label class="radio-tag active">
+                <input type="radio" name="dressCode" value="Tươi tắn, thoải mái nhất 👟" checked>
+                <span>👟 Thoải mái, năng động</span>
+              </label>
+              <label class="radio-tag">
+                <input type="radio" name="dressCode" value="Váy xinh lung linh / Lên đồ đẹp 👗">
+                <span>👗 Váy xinh / Đẹp sang</span>
+              </label>
+              <label class="radio-tag">
+                <input type="radio" name="dressCode" value="Ton-sur-ton tone trắng/đen 🤍🖤">
+                <span>🤍🖤 Tone-sur-tone</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="input-field-group mt-3">
+            <label for="sweetNoteInput">Lời nhắn gửi thêm cho <span class="sender-name-display">Anh</span> (nếu
+              có):</label>
+            <textarea id="sweetNoteInput" class="custom-input custom-textarea" rows="2"
+              placeholder="Ví dụ: Nhớ mang áo ấm nha / Em thích ăn ít ngọt nè..."></textarea>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Wizard Navigation Buttons -->
+      <div class="wizard-footer">
+        <button class="nav-btn prev-btn" id="wizardPrevBtn" style="visibility: hidden;">
+          <span>‹ Quay lại</span>
+        </button>
+        <div class="step-indicator-text">Bước <span id="currentStepNum">1</span> / 2</div>
+        <button class="nav-btn next-btn" id="wizardNextBtn">
+          <span>Tiếp theo ›</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SCENE 4: BOARDING PASS TICKET ==================== -->
+  <section class="scene scene-ticket" id="sceneTicket">
+    <div class="ticket-celebration">
+      <div class="celebration-badge">🎉 CHỐT KÈO THÀNH CÔNG! 🎉</div>
+      <h2 class="ticket-congrats-title">Tấm Vé Hẹn Hò Của Chúng Mình</h2>
+      <p class="ticket-congrats-sub">Hãy lưu lại chiếc vé độc quyền này hoặc gửi ngay cho người ấy nhé!</p>
+    </div>
+
+    <!-- THE TICKET COMPONENT -->
+    <div class="ticket-container" id="printableTicket">
+      <div class="ticket-card">
+        <!-- Top Header -->
+        <div class="ticket-header">
+          <div class="airline-brand">
+            <span class="brand-logo">💖</span>
+            <div class="brand-text">
+              <span class="brand-name">CUPID AIRLINES</span>
+              <span class="brand-sub">BOARDING PASS TO HAPPINESS</span>
+            </div>
+          </div>
+          <div class="ticket-tag-vip">VIP DATE PASS</div>
+        </div>
+
+        <!-- Main Body -->
+        <div class="ticket-main">
+          <!-- Route -->
+          <div class="ticket-route">
+            <div class="route-point">
+              <span class="city-code sender-code">FROM</span>
+              <span class="city-name sender-name-display">Anh</span>
+            </div>
+            <div class="flight-icon">
+              <span class="flight-line"></span>
+              <span class="flight-plane">✈️</span>
+              <span class="flight-heart">💕</span>
+            </div>
+            <div class="route-point right">
+              <span class="city-code receiver-code">TO</span>
+              <span class="city-name recipient-name-display">Em</span>
+            </div>
+          </div>
+
+          <!-- Details Grid -->
+          <div class="ticket-grid">
+            <div class="grid-item">
+              <span class="item-label">NGÀY HẸN (DATE)</span>
+              <span class="item-value highlight-val" id="ticketDateVal">Thứ 5, 15/10/2026 🌟</span>
+            </div>
+            <div class="grid-item">
+              <span class="item-label">GIỜ KHỞI HÀNH (TIME)</span>
+              <span class="item-value highlight-val" id="ticketTimeVal">19:00 (7h tối) 🌃</span>
+            </div>
+            <div class="grid-item full-width">
+              <span class="item-label">MÓN NGON (CUISINE)</span>
+              <span class="item-value" id="ticketFoodVal">Lẩu ấm áp 🍲</span>
+            </div>
+            <div class="grid-item full-width">
+              <span class="item-label">HOẠT ĐỘNG (ACTIVITIES)</span>
+              <span class="item-value" id="ticketActivityVal">Dạo phố lộng gió cùng anh 🛵🍃</span>
+            </div>
+            <div class="grid-item">
+              <span class="item-label">ĐÓN ĐƯA (PICK-UP)</span>
+              <span class="item-value" id="ticketPickupVal">Anh qua đón tận nơi 🛵</span>
+            </div>
+            <div class="grid-item">
+              <span class="item-label">DRESS CODE</span>
+              <span class="item-value" id="ticketDressVal">Thoải mái, xinh tươi</span>
+            </div>
+            <div class="grid-item full-width" id="ticketNoteWrapper">
+              <span class="item-label">LỜI NHẮN ĐẶC BIỆT (NOTE)</span>
+              <span class="item-value note-quote" id="ticketNoteVal">"Nụ cười của em là bắt buộc mang theo!"</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Perforated Cut Line -->
+        <div class="ticket-divider">
+          <div class="notch notch-left"></div>
+          <div class="dash-line"></div>
+          <div class="notch notch-right"></div>
+        </div>
+
+        <!-- Ticket Stub (Bottom) -->
+        <div class="ticket-stub">
+          <div class="stub-meta">
+            <div class="stub-badge">
+              <span>GATE: <strong>TRÁI TIM</strong></span>
+              <span>SEAT: <strong>01 FOREVER</strong></span>
+              <span>STATUS: <strong>CONFIRMED 💍</strong></span>
+            </div>
+            <div class="ticket-stamp">
+              <span class="stamp-circle">
+                APPROVED<br>BY LOVE ❤️
+              </span>
+            </div>
+          </div>
+
+          <div class="barcode-wrapper">
+            <div class="barcode-lines" aria-hidden="true"></div>
+            <span class="barcode-number">DATE-TICKET-2026-LOVE-VIP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticket Sharing Actions -->
+    <div class="ticket-actions">
+      <button class="action-btn-primary" id="downloadTicketBtn">
+        <span>📸 Tải Vé Về Máy (Ảnh)</span>
+      </button>
+      <button class="action-btn-secondary" id="shareZaloBtn">
+        <span>💬 Gửi Lại Cho Người Ấy</span>
+      </button>
+      <button class="action-btn-secondary" id="copyDetailsBtn">
+        <span>📋 Sao Chép Tin Nhắn</span>
+      </button>
+      <button class="action-btn-link" id="planAgainBtn">
+        <span>🔄 Muốn Đổi Ý / Chọn Lại</span>
+      </button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-message" id="toastMessage"></div>
+  </section>
+
+</main>
+
+<!-- ==================== CUSTOMIZER MODAL ==================== -->
+<div class="modal-backdrop" id="customizerModal">
+  <div class="modal-card glass-card">
+    <div class="modal-header">
+      <h3>✨ Tùy Chỉnh Thiệp (Dành Cho Bạn)</h3>
+      <button class="modal-close-btn" id="closeModalBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-tip">Nhập tên của bạn và crush/người yêu để thiệp hiển thị đúng tên 2 người!</p>
+
+      <div class="input-field-group">
+        <label for="customSenderName">Tên của bạn (Người gửi):</label>
+        <input type="text" id="customSenderName" class="custom-input" value="Anh" placeholder="Ví dụ: Anh, Đức, Tớ...">
+      </div>
+
+      <div class="input-field-group mt-3">
+        <label for="customRecipientName">Tên người ấy (Người nhận):</label>
+        <input type="text" id="customRecipientName" class="custom-input" value="Em"
+          placeholder="Ví dụ: Em, Em iu, Bé bi, Cậu...">
+      </div>
+
+      <div class="input-field-group mt-3">
+        <label for="customInvMessage">Lời mở đầu mời đi date:</label>
+        <textarea id="customInvMessage" class="custom-input custom-textarea"
+          rows="3">Thứ 5 ngày 15/10/2026 này, lúc 7h tối em có rảnh không? Anh muốn mời em một buổi date thật ngọt ngào: cùng đi ăn món em thích và dạo phố lộng gió với anh nhé! 🥰</textarea>
+      </div>
+
+      <div class="modal-share-box mt-3">
+        <label>Link tạo sẵn kèm tên để gửi cho người ấy:</label>
+        <div class="copy-url-group">
+          <input type="text" id="shareableUrlInput" class="custom-input" readonly>
+          <button class="btn-copy-url" id="copyShareableUrlBtn">Copy Link</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn-primary" id="saveCustomizerBtn">Lưu & Áp Dụng Ngay</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+
+</html>
